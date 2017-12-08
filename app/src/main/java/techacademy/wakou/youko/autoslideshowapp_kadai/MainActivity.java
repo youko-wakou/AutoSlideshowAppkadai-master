@@ -92,9 +92,16 @@ public class MainActivity extends AppCompatActivity {
                         ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
                         imageVIew.setImageURI(imageUri);
 //                        もし一番最後の画像に行ったら
-                        if(cursor.moveToLast()){
-                            cursor.moveToFirst();
-                        }
+                    }else{
+                        cursor.moveToFirst();
+                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                        Long id = cursor.getLong(fieldIndex);
+                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                        Log.d("ANDROID", "URI:" + imageUri.toString());
+
+                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                        imageVIew.setImageURI(imageUri);
+
                     }
                 }
             });
@@ -110,10 +117,16 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("test","URI:"+ imageUri.toString());
                         ImageView imageVIew = (ImageView)findViewById(R.id.imageView);
                         imageVIew.setImageURI(imageUri);
-//                        もし一番最初の画像に行ったら
-                        if(cursor.moveToFirst()){
-                            cursor.moveToLast();
-                        }
+                  }else{
+                        cursor.moveToLast();
+                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                        Long id = cursor.getLong(fieldIndex);
+                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                        Log.d("ANDROID", "URI:" + imageUri.toString());
+
+                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                        imageVIew.setImageURI(imageUri);
+
                     }
                 }
             });
