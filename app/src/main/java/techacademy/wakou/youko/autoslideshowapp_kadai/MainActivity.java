@@ -85,14 +85,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if(cursor.moveToNext()){
-                            int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                            Long id = cursor.getLong(fieldIndex);
-                           final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                            Log.d("test", "URI:" + imageUri.toString());
-                            ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-                            imageVIew.setImageURI(imageUri);
-
+                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                        Long id = cursor.getLong(fieldIndex);
+                       final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                        Log.d("test", "URI:" + imageUri.toString());
+                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                        imageVIew.setImageURI(imageUri);
+//                        もし一番最後の画像に行ったら
+                        if(cursor.moveToLast()){
+                            cursor.moveToFirst();
                         }
+                    }
                 }
             });
 
@@ -107,6 +110,10 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("test","URI:"+ imageUri.toString());
                         ImageView imageVIew = (ImageView)findViewById(R.id.imageView);
                         imageVIew.setImageURI(imageUri);
+//                        もし一番最初の画像に行ったら
+                        if(cursor.moveToFirst()){
+                            cursor.moveToLast();
+                        }
                     }
                 }
             });
