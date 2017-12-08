@@ -152,6 +152,8 @@ public class MainActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
+                                stop.setVisibility(View.VISIBLE);
+                                start.setVisibility(View.GONE);
                                 prev.setEnabled(false);
                                 next.setEnabled(false);
 //                                次の画像へ自動送りをする
@@ -187,7 +189,10 @@ public class MainActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                start.setVisibility(View.VISIBLE);
+                stop.setVisibility(View.GONE);
+                next.setEnabled(true);
+                prev.setEnabled(true);
                 timer.cancel();
             }
         });
