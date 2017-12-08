@@ -91,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                     int imgpath;
                     imgpath = Integer.parseInt(pathImg);
                     if(cursor.moveToNext()){
-                        for (int i = 38; i <= 43; i++) {
+                        CharSequence[] list = new CharSequence[cursor.getCount()];
+                            for (int i = 38; i <= list.length; i++) {
                             int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                             Long id = cursor.getLong(fieldIndex);
                            final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, i);
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
 //                    IDが４３異常だったらIDが３７の画像を表示する
                     }
+                    cursor.close();
 //                    else{
 //                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
 //                        Long id = cursor.getLong(fieldIndex);
