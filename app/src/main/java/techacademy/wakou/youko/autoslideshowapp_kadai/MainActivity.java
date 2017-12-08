@@ -83,47 +83,21 @@ public class MainActivity extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    もしURIのIDが43未満だったらIDが３８以上のIDの画像を表示する
-                    int path;
-                    path = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                    String pathImg;
-                    pathImg = cursor.getString(path);
-                    int imgpath;
-                    imgpath = Integer.parseInt(pathImg);
                     if(cursor.moveToNext()){
-                        CharSequence[] list = new CharSequence[cursor.getCount()];
-                            for (int i = 38; i <= list.length; i++) {
                             int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                             Long id = cursor.getLong(fieldIndex);
-                           final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, i);
+                           final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                             Log.d("test", "URI:" + imageUri.toString());
                             ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
                             imageVIew.setImageURI(imageUri);
 
                         }
 
-//                    IDが４３異常だったらIDが３７の画像を表示する
-                    }
-                    cursor.close();
-//                    else{
-//                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-//                        Long id = cursor.getLong(fieldIndex);
-//                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 37);
-//                        Log.d("test", "URI:" + imageUri.toString());
-//
-//                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-//                        imageVIew.setImageURI(imageUri);
-//
-//                    }
                 }
             });
         }
-        //    @Override
-        //    public void onDestroy(){
-        //        super.onDestroy();
-//                cursor.close();
-        //    }
-
-
     }
+
+
 }
+
