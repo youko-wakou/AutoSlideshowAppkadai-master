@@ -93,7 +93,21 @@ public class MainActivity extends AppCompatActivity {
                             imageVIew.setImageURI(imageUri);
 
                         }
-//                    cursor.close();
+                }
+            });
+
+//            前の画像に戻るボタン
+            prev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(cursor.moveToPrevious()){
+                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                        Long id = cursor.getLong(fieldIndex);
+                        final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,id);
+                        Log.d("test","URI:"+ imageUri.toString());
+                        ImageView imageVIew = (ImageView)findViewById(R.id.imageView);
+                        imageVIew.setImageURI(imageUri);
+                    }
                 }
             });
         }
