@@ -15,14 +15,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PERMISSIONS_REQUEST_CODE= 100;
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
     private Button start;
     private Button stop;
     private Button next;
     private Button prev;
     private Cursor cursor;
+    private Timer timer;
+//    Handler handler = new Handler();
+    double timerSec = 0.0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,37 +39,42 @@ public class MainActivity extends AppCompatActivity {
         stop = findViewById(R.id.stop);
         next = findViewById(R.id.next);
         prev = findViewById(R.id.prev);
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
-            if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED){
+        timer = new Timer();
+//        Handler handler = new Handler();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 getContentsInfo();
-            }else{
-                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},PERMISSIONS_REQUEST_CODE);
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
             }
-        }else{
+        } else {
             getContentsInfo();
         }
     }
-     @Override
-     public void onDestroy(){
-             super.onDestroy();
-            cursor.close();
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        cursor.close();
     }
 
 
-//    @Override
-    public void onRequestPermissionResult(int requestCode,String permissions[],int[] grantResults){
-       switch (requestCode){
-           case PERMISSIONS_REQUEST_CODE:
-               if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                   getContentsInfo();
-               }
-               break;
-           default:
-               break;
-       }
+    //    @Override
+    public void onRequestPermissionResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getContentsInfo();
+                }
+                break;
+            default:
+                break;
+        }
     }
-    private void getContentsInfo(){
-        ContentResolver resolver=getContentResolver();
+
+    private void getContentsInfo() {
+        ContentResolver resolver = getContentResolver();
         final Cursor cursor = resolver.query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null,
@@ -71,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
                 null
         );
 //        初めの画像が表示される
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
             Long id = cursor.getLong(fieldIndex);
             Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
@@ -84,15 +96,15 @@ public class MainActivity extends AppCompatActivity {
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(cursor.moveToNext()){
+                    if (cursor.moveToNext()) {
                         int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                         Long id = cursor.getLong(fieldIndex);
-                       final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                        final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                         Log.d("test", "URI:" + imageUri.toString());
                         ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
                         imageVIew.setImageURI(imageUri);
 //                        もし一番最後の画像に行ったら
-                    }else{
+                    } else {
                         cursor.moveToFirst();
                         int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                         Long id = cursor.getLong(fieldIndex);
@@ -110,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
             prev.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(cursor.moveToPrevious()){
+                    if (cursor.moveToPrevious()) {
                         int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                         Long id = cursor.getLong(fieldIndex);
-                        final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,id);
-                        Log.d("test","URI:"+ imageUri.toString());
-                        ImageView imageVIew = (ImageView)findViewById(R.id.imageView);
+                        final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                        Log.d("test", "URI:" + imageUri.toString());
+                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
                         imageVIew.setImageURI(imageUri);
-                  }else{
+                    } else {
                         cursor.moveToLast();
                         int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                         Long id = cursor.getLong(fieldIndex);
@@ -131,8 +143,54 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+//        startボタンを押したときの処理
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        timerSec += 1;
+
+//                        handler.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+                                if (cursor.moveToFirst()) {
+                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                                    Long id = cursor.getLong(fieldIndex);
+                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                    Log.d("ANDROID", "URI:" + imageUri.toString());
+
+                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                                    imageVIew.setImageURI(imageUri);
+                                }
+                                if (cursor.moveToNext()) {
+                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                                    Long id = cursor.getLong(fieldIndex);
+                                    final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                    Log.d("test", "URI:" + imageUri.toString());
+                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                                    imageVIew.setImageURI(imageUri);
+//                        もし一番最後の画像に行ったら
+                                } else {
+                                    cursor.moveToFirst();
+                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                                    Long id = cursor.getLong(fieldIndex);
+                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                    Log.d("ANDROID", "URI:" + imageUri.toString());
+
+                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                                    imageVIew.setImageURI(imageUri);
+
+                                }
+                            }
+//                        });
+//                    }
+                }, 2000, 2000);
+            }
+        });
+
+//        一時停止ここから
     }
-
-
 }
 
