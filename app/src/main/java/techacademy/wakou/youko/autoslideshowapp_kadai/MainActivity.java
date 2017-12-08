@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                     pathImg = cursor.getString(path);
                     int imgpath;
                     imgpath = Integer.parseInt(pathImg);
-                    if(imgpath <=43){
+                    if(cursor.moveToNext()){
                         for (int i = 38; i <= 43; i++) {
                             int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                             Long id = cursor.getLong(fieldIndex);
@@ -102,16 +102,17 @@ public class MainActivity extends AppCompatActivity {
                         }
 
 //                    IDが４３異常だったらIDが３７の画像を表示する
-                    }else{
-                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                        Long id = cursor.getLong(fieldIndex);
-                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 37);
-                        Log.d("test", "URI:" + imageUri.toString());
-
-                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-                        imageVIew.setImageURI(imageUri);
-
                     }
+//                    else{
+//                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+//                        Long id = cursor.getLong(fieldIndex);
+//                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 37);
+//                        Log.d("test", "URI:" + imageUri.toString());
+//
+//                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+//                        imageVIew.setImageURI(imageUri);
+//
+//                    }
                 }
             });
         }
