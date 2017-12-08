@@ -155,15 +155,15 @@ public class MainActivity extends AppCompatActivity {
 //                        handler.post(new Runnable() {
 //                            @Override
 //                            public void run() {
-                                if (cursor.moveToFirst()) {
-                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                                    Long id = cursor.getLong(fieldIndex);
-                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                    Log.d("ANDROID", "URI:" + imageUri.toString());
-
-                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-                                    imageVIew.setImageURI(imageUri);
-                                }
+//                                if (cursor.moveToFirst()) {
+//                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+//                                    Long id = cursor.getLong(fieldIndex);
+//                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+//                                    Log.d("ANDROID", "URI:" + imageUri.toString());
+//
+//                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+//                                    imageVIew.setImageURI(imageUri);
+//                                }
                                 if (cursor.moveToNext()) {
                                     int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                                     Long id = cursor.getLong(fieldIndex);
