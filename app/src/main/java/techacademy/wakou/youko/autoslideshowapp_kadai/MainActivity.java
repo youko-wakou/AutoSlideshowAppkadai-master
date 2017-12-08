@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                             imageVIew.setImageURI(imageUri);
 
                         }
-
+                    cursor.close();
                 }
             });
         }
