@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     private Button prev;
     private Cursor cursor;
     private Timer timer;
-//    Handler handler = new Handler();
-    double timerSec = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         next = findViewById(R.id.next);
         prev = findViewById(R.id.prev);
         timer = new Timer();
-//        Handler handler = new Handler();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -147,23 +144,11 @@ public class MainActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                ２秒ごとの処理
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        timerSec += 1;
-
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (cursor.moveToFirst()) {
-//                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-//                                    Long id = cursor.getLong(fieldIndex);
-//                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-//                                    Log.d("ANDROID", "URI:" + imageUri.toString());
-//
-//                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-//                                    imageVIew.setImageURI(imageUri);
-//                                }
+//                                次の画像へ自動送りをする
                                 if (cursor.moveToNext()) {
                                     int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                                     Long id = cursor.getLong(fieldIndex);
@@ -171,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("test", "URI:" + imageUri.toString());
                                     ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
                                     imageVIew.setImageURI(imageUri);
-//                        もし一番最後の画像に行ったら
+//                              もし一番最後の画像に行ったら
                                 } else {
                                     cursor.moveToFirst();
                                     int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
