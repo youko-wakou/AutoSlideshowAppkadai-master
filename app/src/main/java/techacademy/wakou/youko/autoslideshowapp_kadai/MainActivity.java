@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 null
         );
-//        初めの画像はID３７の画像にする
+//        初めの画像が表示される
         if(cursor.moveToFirst()) {
             int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
             Long id = cursor.getLong(fieldIndex);
-            Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 37);
+            Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
             Log.d("ANDROID", "URI:" + imageUri.toString());
 
             ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
