@@ -141,46 +141,51 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        stop.setVisibility(View.GONE);
 //        startボタンを押したときの処理
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (timer == null) {
+                    timer = new Timer();
 //                ２秒ごとの処理
-                timer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                stop.setVisibility(View.VISIBLE);
-                                start.setVisibility(View.GONE);
-                                prev.setEnabled(false);
-                                next.setEnabled(false);
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    stop.setVisibility(View.VISIBLE);
+                                    start.setVisibility(View.GONE);
+                                    prev.setEnabled(false);
+                                    next.setEnabled(false);
 //                                次の画像へ自動送りをする
-                                if (cursor.moveToNext()) {
-                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                                    Long id = cursor.getLong(fieldIndex);
-                                    final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                    Log.d("test", "URI:" + imageUri.toString());
-                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-                                    imageVIew.setImageURI(imageUri);
+                                    if (cursor.moveToNext()) {
+                                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                                        Long id = cursor.getLong(fieldIndex);
+                                        final Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                        Log.d("test", "URI:" + imageUri.toString());
+                                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                                        imageVIew.setImageURI(imageUri);
 //                              もし一番最後の画像に行ったら
-                                } else {
-                                    cursor.moveToFirst();
-                                    int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
-                                    Long id = cursor.getLong(fieldIndex);
-                                    Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                    Log.d("ANDROID", "URI:" + imageUri.toString());
+                                    } else {
+                                        cursor.moveToFirst();
+                                        int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+                                        Long id = cursor.getLong(fieldIndex);
+                                        Uri imageUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                        Log.d("ANDROID", "URI:" + imageUri.toString());
 
-                                    ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
-                                    imageVIew.setImageURI(imageUri);
+                                        ImageView imageVIew = (ImageView) findViewById(R.id.imageView);
+                                        imageVIew.setImageURI(imageUri);
 
+                                    }
                                 }
-                            }
-                        });
+                            });
 
-                            }
-                }, 2000, 2000);
+                        }
+                    }, 2000, 2000);
+                }
             }
         });
 
@@ -194,6 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 next.setEnabled(true);
                 prev.setEnabled(true);
                 timer.cancel();
+                timer = null;
             }
         });
 //        stopここまで
