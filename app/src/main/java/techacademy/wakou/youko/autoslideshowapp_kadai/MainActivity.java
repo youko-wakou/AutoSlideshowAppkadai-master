@@ -152,7 +152,9 @@ public class MainActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                //                                次の画像へ自動送りをする
+                                prev.setEnabled(false);
+                                next.setEnabled(false);
+//                                次の画像へ自動送りをする
                                 if (cursor.moveToNext()) {
                                     int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                                     Long id = cursor.getLong(fieldIndex);
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 timer.cancel();
             }
         });
