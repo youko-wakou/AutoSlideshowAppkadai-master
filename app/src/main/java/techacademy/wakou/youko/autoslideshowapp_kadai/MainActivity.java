@@ -181,6 +181,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //        一時停止ここから
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timer.cancel();
+            }
+        });
+//        stopここまで
     }
 }
 
