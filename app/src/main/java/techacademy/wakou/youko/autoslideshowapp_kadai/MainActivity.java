@@ -1,5 +1,6 @@
 package techacademy.wakou.youko.autoslideshowapp_kadai;
 
+import android.os.Handler;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private Button prev;
     private Cursor cursor;
     private Timer timer;
-
+    Handler handler = new Handler();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,7 +149,10 @@ public class MainActivity extends AppCompatActivity {
                 timer.schedule(new TimerTask() {
                     @Override
                     public void run() {
-//                                次の画像へ自動送りをする
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                //                                次の画像へ自動送りをする
                                 if (cursor.moveToNext()) {
                                     int fieldIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                                     Long id = cursor.getLong(fieldIndex);
@@ -169,8 +173,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 }
                             }
-//                        });
-//                    }
+                        });
+
+                            }
                 }, 2000, 2000);
             }
         });
