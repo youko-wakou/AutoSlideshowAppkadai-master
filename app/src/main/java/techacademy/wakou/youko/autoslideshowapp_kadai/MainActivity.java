@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private Button stop;
     private Button next;
     private Button prev;
+    private Cursor cursor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,11 +42,11 @@ public class MainActivity extends AppCompatActivity {
             getContentsInfo();
         }
     }
-//     @Override
-//     public void onDestroy(){
-//             super.onDestroy();
-//            getContentsInfo();
-//    }
+     @Override
+     public void onDestroy(){
+             super.onDestroy();
+            cursor.close();
+    }
 
 
 //    @Override
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             imageVIew.setImageURI(imageUri);
 
                         }
-                    cursor.close();
+//                    cursor.close();
                 }
             });
         }
